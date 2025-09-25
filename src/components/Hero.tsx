@@ -51,7 +51,7 @@ export function Hero({ onViewCatalog }: HeroProps) {
       
       {/* Curved divider */}
       <div className="-mt-8 md:-mt-12">
-        <SectionDivider variant="wave1" color="white" flip={true} />
+        <SectionDivider variant="wave1" color="soft-gray" flip={true} />
       </div>
     </div>
   );

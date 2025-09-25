@@ -14,7 +14,7 @@ export function ProductCatalog({ category, onViewProduct, onBack }: ProductCatal
   const [searchQuery, setSearchQuery] = useState("");
   const products = useQuery(api.products.list, { category: category || undefined });
   const searchResults = useQuery(
-    api.products.search, 
+    api.products.search,
     searchQuery ? { query: searchQuery, category: category || undefined } : "skip"
   );
 
@@ -26,7 +26,7 @@ export function ProductCatalog({ category, onViewProduct, onBack }: ProductCatal
         <div className="container-max">
           <div className="flex items-center justify-between mb-12">
             <div>
-              <button 
+              <button
                 onClick={onBack}
                 className="text-charcoal-light hover:text-charcoal mb-6 flex items-center gap-2 font-sans text-sm uppercase tracking-wider"
               >
@@ -53,9 +53,9 @@ export function ProductCatalog({ category, onViewProduct, onBack }: ProductCatal
           {displayProducts && displayProducts.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-12">
               {displayProducts.map((product) => (
-                <ProductCard 
-                  key={product._id} 
-                  product={product} 
+                <ProductCard
+                  key={product._id}
+                  product={product}
                   onViewProduct={onViewProduct}
                 />
               ))}

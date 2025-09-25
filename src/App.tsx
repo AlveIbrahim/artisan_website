@@ -9,7 +9,7 @@ import { FeaturedProducts } from "./components/FeaturedProducts";
 import { Categories } from "./components/Categories";
 import { Artists } from "./components/Artists";
 import { Footer } from "./components/Footer";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ProductCatalog } from "./components/ProductCatalog";
 import { Cart } from "./components/Cart";
 import { ProductDetail } from "./components/ProductDetail";
@@ -31,6 +31,11 @@ export default function App() {
     setSelectedCategory(category || null);
     setCurrentView('catalog');
   };
+
+  // Always scroll to top when changing "pages" within the SPA
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }, [currentView, selectedProductId]);
 
   return (
     <div className="min-h-screen flex flex-col bg-warm-white">

@@ -27,8 +27,12 @@ export default function AdminPanel() {
   const [isEditing, setIsEditing] = useState(false);
   const [newMaterial, setNewMaterial] = useState("");
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const [filterCategory, setFilterCategory] = useState<string>("all");
+  // Ensure we always have a concrete array to render and filter
+  const filteredProducts = (products || []).filter(
+    (p: any) => filterCategory === "all" || p.category === filterCategory
+  );
+   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target as HTMLInputElement;
     
     if (type === "checkbox") {
@@ -208,7 +212,7 @@ export default function AdminPanel() {
                 name="name"
                 value={formData.name}
                 onChange={handleInputChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-md border-indigo-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 required
               />
             </div>
@@ -220,7 +224,7 @@ export default function AdminPanel() {
                 value={formData.description}
                 onChange={handleInputChange}
                 rows={3}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-md border-indigo-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 required
               />
             </div>
@@ -234,7 +238,7 @@ export default function AdminPanel() {
                 onChange={handleInputChange}
                 min="0"
                 step="0.01"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-md border-indigo-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 required
               />
             </div>
@@ -245,13 +249,14 @@ export default function AdminPanel() {
                 name="category"
                 value={formData.category}
                 onChange={handleInputChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-md border-indigo-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 required
               >
                 <option value="">Select a category</option>
                 <option value="ceramics">Ceramics</option>
                 <option value="textiles">Textiles</option>
                 <option value="jewelry">Jewelry</option>
+                <option value="painting">Painting</option>
                 <option value="woodwork">Woodwork</option>
               </select>
             </div>
@@ -278,7 +283,7 @@ export default function AdminPanel() {
                   type="text"
                   value={newMaterial}
                   onChange={(e) => setNewMaterial(e.target.value)}
-                  className="block w-full rounded-l-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                  className="block w-full rounded-l-md border-indigo-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                   placeholder="Add material"
                 />
                 <button
@@ -327,7 +332,7 @@ export default function AdminPanel() {
                 value={formData.quantity}
                 onChange={handleInputChange}
                 min="0"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-md border-indigo-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 required
               />
             </div>
@@ -350,7 +355,7 @@ export default function AdminPanel() {
                 value={formData.artistNotes}
                 onChange={handleInputChange}
                 rows={2}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-md border-indigo-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               />
             </div>
             
@@ -378,7 +383,24 @@ export default function AdminPanel() {
         <div className="lg:col-span-2">
           <div className="bg-white shadow-md rounded-lg overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-200">
-              <h2 className="text-xl font-semibold">Products</h2>
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-semibold">Products</h2>
+                <div className="flex items-center gap-2">
+                  <label className="text-sm text-gray-700">Filter by category</label>
+                  <select
+                    value={filterCategory}
+                    onChange={(e) => setFilterCategory(e.target.value)}
+                    className="block rounded-md border-indigo-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+                  >
+                    <option value="all">All</option>
+                    <option value="ceramics">Ceramics</option>
+                    <option value="textiles">Textiles</option>
+                    <option value="jewelry">Jewelry</option>
+                    <option value="art">Painting</option>
+                    <option value="woodwork">Woodwork</option>
+                  </select>
+                </div>
+              </div>
             </div>
             
             <div className="overflow-x-auto">
@@ -403,7 +425,7 @@ export default function AdminPanel() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {products?.map((product) => (
+                  {filteredProducts.map((product) => (
                     <tr key={product._id}>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
@@ -444,7 +466,7 @@ export default function AdminPanel() {
                     </tr>
                   ))}
                   
-                  {!products || products.length === 0 ? (
+                  {filteredProducts.length === 0 ? (
                     <tr>
                       <td colSpan={5} className="px-6 py-4 text-center text-sm text-gray-500">
                         No products found

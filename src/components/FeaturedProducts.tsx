@@ -11,10 +11,6 @@ interface FeaturedProductsProps {
 export function FeaturedProducts({ onViewProduct }: FeaturedProductsProps) {
   const products = useQuery(api.products.list, { featured: true, limit: 6 });
 
-  if (!products || products.length === 0) {
-    return null;
-  }
-
   return (
     <div className="relative">
       <section className="section-padding bg-soft-gray">
@@ -29,20 +25,30 @@ export function FeaturedProducts({ onViewProduct }: FeaturedProductsProps) {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
-            {products.map((product) => (
-              <ProductCard 
-                key={product._id} 
-                product={product} 
-                onViewProduct={onViewProduct}
-              />
-            ))}
-          </div>
+          {products === undefined ? (
+            <div className="text-center py-12">
+              <p className="text-charcoal-light">Loading featured products...</p>
+            </div>
+          ) : products.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
+              {products.map((product) => (
+                <ProductCard 
+                  key={product._id} 
+                  product={product} 
+                  onViewProduct={onViewProduct}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-charcoal-light">No featured products available yet.</p>
+            </div>
+          )}
         </div>
       </section>
       
       {/* Curved divider */}
-      <SectionDivider variant="curve1" color="warm-white" />
+      <SectionDivider variant="wave2" flip={true} color="white" backgroundColor="soft-gray" />
     </div>
   );
 }

@@ -14,6 +14,7 @@ export function Categories({ onViewCategory }: CategoriesProps) {
     { name: "ceramics", description: "Handthrown pottery and sculptural pieces" },
     { name: "textiles", description: "Woven fabrics and fiber art" },
     { name: "jewelry", description: "Handcrafted precious metal work" },
+    { name: "painting", description: "Original artworks and visual art" },
     { name: "woodwork", description: "Carved and turned wooden objects" },
   ];
 
